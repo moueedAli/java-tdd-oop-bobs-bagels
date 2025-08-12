@@ -50,6 +50,7 @@ public class BobsBagelTest {
         basket.addItem(item2, inventory);
 
         Assertions.assertEquals(0, basket.getRemainingCapacity());
+        Assertions.assertEquals(true, basket.isFull());
 
         basket.addItem(item3, inventory);
         Assertions.assertEquals(false, basket.containsItem(item3));
@@ -87,9 +88,9 @@ public class BobsBagelTest {
     @Test
     public void testGetCostOfOneItem() {
         Inventory inventory = new Inventory();
-        Item item1 = inventory.getItem("FILX");
+        Item item1 = inventory.getItem("BGLO");
 
-        Assertions.assertEquals(0.12, item1.getPrice());
+        Assertions.assertEquals(0.49, item1.getPrice());
     }
 
     @Test
@@ -104,6 +105,15 @@ public class BobsBagelTest {
 
         bagel.removeFillings(bacon, inventory);
         Assertions.assertEquals(0, bagel.getFillings().size());
+    }
+
+    @Test
+    public void testGetPriceOfFillingBeforeAdding() {
+        Inventory inventory = new Inventory();
+        Bagel bagel = (Bagel) inventory.getItem("BGLO");
+        Fillings bacon = (Fillings) inventory.getItem("FILB");
+
+        Assertions.assertEquals(0.12, bacon.getPrice());
     }
 
     @Test
