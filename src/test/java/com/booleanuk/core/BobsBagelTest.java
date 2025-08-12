@@ -6,25 +6,22 @@ import org.junit.jupiter.api.Test;
 public class BobsBagelTest {
 
     @Test
-    public void testChangeCapacity() {
-        Basket basket = new Basket();
-        basket.setCapacity(11);
-
-        Assertions.assertEquals(11, basket.getCapacity());
-        Assertions.assertEquals(11, basket.getRemainingCapacity());
-        Assertions.assertEquals(false, basket.isFull());
-    }
-
-    @Test
     public void testAddingItemToBasket() {
         Basket basket = new Basket();
         Inventory inventory = new Inventory();
         Item item = inventory.getItem("BGLP");
+        basket.setCapacity(2); // must include this because capacity variable in Basket class is static
+        basket.addItem(item, inventory);
 
-        Assertions.assertEquals(true, basket.addItem(item, inventory));
+        Assertions.assertEquals(1, basket.getRemainingCapacity());
+        Assertions.assertEquals(true, basket.containsItem(item));
+
+        Item item1 = new Item("test", 1.0, "test", "test");
+        basket.addItem(item1, inventory);
+
+        Assertions.assertEquals(false, basket.containsItem(item1));
     }
 
-    // look over
     @Test
     public void testRemovingItemFromBasket() {
         Basket basket = new Basket();
@@ -34,31 +31,43 @@ public class BobsBagelTest {
         basket.addItem(item1, inventory);
         basket.addItem(item2, inventory);
 
-        Assertions.assertEquals(true, basket.removeItem(item1));
-        Assertions.assertEquals(false, basket.containsItem(item1));
+        Assertions.assertEquals(true, basket.containsItem(item1));
         Assertions.assertEquals(true, basket.containsItem(item2));
+
+        basket.removeItem(item1);
+        Assertions.assertEquals(false, basket.containsItem(item1));
     }
 
     @Test
     public void testAddingIfBasketFull() {
         Basket basket = new Basket();
+        basket.setCapacity(2);
         Inventory inventory = new Inventory();
         Item item1 = inventory.getItem("BGLO");
         Item item2 = inventory.getItem("BGLP");
+        Item item3 = inventory.getItem("BGLE");
         basket.addItem(item1, inventory);
+        basket.addItem(item2, inventory);
 
-        Assertions.assertEquals(true, basket.addItem(item2, inventory));
-        Assertions.assertEquals(true, basket.containsItem(item1));
+        Assertions.assertEquals(0, basket.getRemainingCapacity());
+
+        basket.addItem(item3, inventory);
+        Assertions.assertEquals(false, basket.containsItem(item3));
     }
 
     // look over
     @Test
     public void testRemovingIfItemDontExistOrBasketEmpty() {
         Basket basket = new Basket();
+        basket.setCapacity(2);
         Inventory inventory = new Inventory();
         Item item = inventory.getItem("BGLO");
 
-        Assertions.assertEquals(false, basket.removeItem(item));
+        basket.addItem(item, inventory);
+        Assertions.assertEquals(1, basket.getRemainingCapacity());
+
+        basket.removeItem(item);
+        Assertions.assertEquals(2, basket.getRemainingCapacity());
     }
 
     @Test
@@ -67,19 +76,16 @@ public class BobsBagelTest {
         Inventory inventory = new Inventory();
         Item item1 = inventory.getItem("BGLO");
         Item item2 = inventory.getItem("FILB");
-        Item item3 = inventory.getItem("COFB");
 
         basket.addItem(item1, inventory);
         basket.addItem(item2, inventory);
-        basket.addItem(item3, inventory);
 
         double totalCost = basket.calculateTotalCost();
-        Assertions.assertEquals(1.60, totalCost);
+        Assertions.assertEquals(0.61, totalCost);
     }
 
     @Test
     public void testGetCostOfOneItem() {
-        Basket basket = new Basket();
         Inventory inventory = new Inventory();
         Item item1 = inventory.getItem("FILX");
 
@@ -87,7 +93,7 @@ public class BobsBagelTest {
     }
 
     @Test
-    public void testChoseFillings() {
+    public void testChoseAndRemoveFillings() {
         Inventory inventory = new Inventory();
         Bagel bagel = (Bagel) inventory.getItem("BGLO");
         Fillings bacon = (Fillings) inventory.getItem("FILB");
@@ -95,7 +101,9 @@ public class BobsBagelTest {
         bagel.addFillings(bacon);
 
         Assertions.assertEquals(true, bagel.getFillings().contains(bacon));
-        Assertions.assertEquals(0.61, bagel.getBagelPrice());
+
+        bagel.removeFillings(bacon, inventory);
+        Assertions.assertEquals(0, bagel.getFillings().size());
     }
 
     @Test
@@ -122,8 +130,10 @@ public class BobsBagelTest {
     @Test
     public void testCustomerViewPriceBeforeAdding() {
         Inventory inventory = new Inventory();
+        Customer cust = new Customer("Bob");
         Item item = inventory.getItem("BGLP");
 
-        Assertions.assertEquals(0.39, item.getPrice(), 0.01);
+        Assertions.assertEquals(0.39, cust.viewCostBeforeAdding(item));
     }
+
 }

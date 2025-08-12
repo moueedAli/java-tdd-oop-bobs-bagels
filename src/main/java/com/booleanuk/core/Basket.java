@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Basket {
 
-    private int MAX_CAPACITY = 10;
+    private static int MAX_CAPACITY = 2;
     private List<Item> customerBasket;
 
     public Basket() {
@@ -29,12 +29,12 @@ public class Basket {
     }
 
     public boolean addItem(Item item, Inventory inventory) {
-        if (isFull() || !inventory.isInInventory(item.SKU)) {
+        if (isFull() || !inventory.isInInventory(item.SKU) || isFull()) {
             return false;
         }
-        else {
+        else
             customerBasket.add(item);
-        }
+
         return true;
     }
 

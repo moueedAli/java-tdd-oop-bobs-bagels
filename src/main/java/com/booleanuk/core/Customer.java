@@ -1,8 +1,8 @@
 package com.booleanuk.core;
 
-public class Customer extends User{
+import java.util.List;
 
-    private String name;
+public class Customer extends User{
 
     public Customer(String name) {
         super(name);
@@ -22,6 +22,10 @@ public class Customer extends User{
 
     public double viewTotalCost() {
         return basket.calculateTotalCost();
+    }
+
+    public double viewCostBeforeAdding(Item item) {
+        return item.getPrice();
     }
 }
 

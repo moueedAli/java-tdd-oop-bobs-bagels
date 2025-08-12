@@ -27,6 +27,6 @@ public class Manager extends User {
     }
 
     public void changeCapacityOfBaskets(int newCap) {
-        ;
+        basket.setCapacity(newCap);
     }
 }
