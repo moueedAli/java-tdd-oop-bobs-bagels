@@ -2,12 +2,10 @@ package com.booleanuk.core;
 
 public abstract class User {
     protected String name;
-    protected Basket basket;
-    protected int DEFAULT_CAPACITY = 5;
+    protected Basket basket = new Basket();
 
     public User(String name) {
         this.name = name;
-        this.basket = new Basket(DEFAULT_CAPACITY);
     }
 
     public String getName() {
@@ -19,14 +17,14 @@ public abstract class User {
     }
 
     public boolean addItemToBasket(Item item, Inventory inventory) {
-        return true;
+        return basket.addItem(item, inventory);
     }
 
     public boolean removeItemFromBasket(Item item) {
-        return true;
+        return basket.removeItem(item);
     }
 
     public boolean isBasketFull() {
-        return true;
+        return basket.isFull();
     }
 }

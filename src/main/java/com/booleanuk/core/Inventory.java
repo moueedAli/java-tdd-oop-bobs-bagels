@@ -27,10 +27,20 @@ public class Inventory {
     ));
 
     public boolean isInInventory(String sku) {
+        for (Item i: inventory) {
+            if (Objects.equals(i.SKU, sku)) {
+                return true;
+            }
+        }
         return false;
     }
 
     public Item getItem(String sku) {
+        for (Item i: inventory) {
+            if (Objects.equals(i.SKU, sku)) {
+                return i;
+            }
+        }
         return null;
     }
 }

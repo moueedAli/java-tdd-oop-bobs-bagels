@@ -3,7 +3,6 @@ package com.booleanuk.core;
 public class Customer extends User{
 
     private String name;
-    private Basket basket;
 
     public Customer(String name) {
         super(name);
@@ -14,15 +13,15 @@ public class Customer extends User{
     }
 
     public boolean addItemToBasket(Item item, Inventory inventory) {
-        return true;
+        return basket.addItem(item, inventory);
     }
 
     public boolean removeItemFromBasket(Item item) {
-        return true;
+        return basket.removeItem(item);
     }
 
     public double viewTotalCost() {
-        return 0.0;
+        return basket.calculateTotalCost();
     }
 }
 

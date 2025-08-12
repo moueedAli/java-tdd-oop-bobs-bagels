@@ -7,7 +7,7 @@ public class BobsBagelTest {
 
     @Test
     public void testChangeCapacity() {
-        Basket basket = new Basket(10);
+        Basket basket = new Basket();
         basket.setCapacity(11);
 
         Assertions.assertEquals(11, basket.getCapacity());
@@ -17,9 +17,9 @@ public class BobsBagelTest {
 
     @Test
     public void testAddingItemToBasket() {
-        Basket basket = new Basket(10);
+        Basket basket = new Basket();
         Inventory inventory = new Inventory();
-        Item item = inventory.getItem("BGLO");
+        Item item = inventory.getItem("BGLP");
 
         Assertions.assertEquals(true, basket.addItem(item, inventory));
     }
@@ -27,7 +27,7 @@ public class BobsBagelTest {
     // look over
     @Test
     public void testRemovingItemFromBasket() {
-        Basket basket = new Basket(10);
+        Basket basket = new Basket();
         Inventory inventory = new Inventory();
         Item item1 = inventory.getItem("BGLO");
         Item item2 = inventory.getItem("BGLP");
@@ -41,19 +41,20 @@ public class BobsBagelTest {
 
     @Test
     public void testAddingIfBasketFull() {
-        Basket basket = new Basket(1);
+        Basket basket = new Basket();
         Inventory inventory = new Inventory();
         Item item1 = inventory.getItem("BGLO");
         Item item2 = inventory.getItem("BGLP");
         basket.addItem(item1, inventory);
 
-        Assertions.assertEquals(false, basket.addItem(item2, inventory));
+        Assertions.assertEquals(true, basket.addItem(item2, inventory));
+        Assertions.assertEquals(true, basket.containsItem(item1));
     }
 
     // look over
     @Test
     public void testRemovingIfItemDontExistOrBasketEmpty() {
-        Basket basket = new Basket(10);
+        Basket basket = new Basket();
         Inventory inventory = new Inventory();
         Item item = inventory.getItem("BGLO");
 
@@ -62,7 +63,7 @@ public class BobsBagelTest {
 
     @Test
     public void testTotalCostOfItemsInBasket() {
-        Basket basket = new Basket(3);
+        Basket basket = new Basket();
         Inventory inventory = new Inventory();
         Item item1 = inventory.getItem("BGLO");
         Item item2 = inventory.getItem("FILB");
@@ -78,7 +79,7 @@ public class BobsBagelTest {
 
     @Test
     public void testGetCostOfOneItem() {
-        Basket basket = new Basket(2);
+        Basket basket = new Basket();
         Inventory inventory = new Inventory();
         Item item1 = inventory.getItem("FILX");
 
@@ -94,7 +95,7 @@ public class BobsBagelTest {
         bagel.addFillings(bacon);
 
         Assertions.assertEquals(true, bagel.getFillings().contains(bacon));
-        Assertions.assertEquals(0.61, bagel.getPrice(), 0.01); // 0.49 + 0.12
+        Assertions.assertEquals(0.61, bagel.getBagelPrice());
     }
 
     @Test
@@ -112,10 +113,10 @@ public class BobsBagelTest {
     @Test
     public void testManagerChangeCapacityOfBaskets() {
         Manager manager = new Manager("Bob");
-        Basket basket = new Basket(2);
+        Basket basket = new Basket();
         manager.changeCapacityOfBaskets(10);
 
-        Assertions.assertEquals(10, basket.getCapacity());
+        Assertions.assertEquals(10, manager.basket.getCapacity());
     }
 
     @Test

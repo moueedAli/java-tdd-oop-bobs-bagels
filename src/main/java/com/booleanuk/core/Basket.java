@@ -5,44 +5,61 @@ import java.util.List;
 
 public class Basket {
 
-    private int capacity;
+    private int MAX_CAPACITY = 10;
     private List<Item> customerBasket;
 
-    public Basket(int capacity) {
-        this.capacity = capacity;
+    public Basket() {
         this.customerBasket = new ArrayList<>();
     }
 
     public int getCapacity() {
-        return capacity;
+        return MAX_CAPACITY;
     }
 
     public void setCapacity(int newCapacity) {
-        ;
+        this.MAX_CAPACITY = newCapacity;
     }
 
     public boolean isFull() {
-        return false;
+        return this.MAX_CAPACITY == customerBasket.size();
     }
 
     public int getRemainingCapacity() {
-        return 0;
+        return MAX_CAPACITY - customerBasket.size();
     }
 
     public boolean addItem(Item item, Inventory inventory) {
-        return false;
+        if (isFull() || !inventory.isInInventory(item.SKU)) {
+            return false;
+        }
+        else {
+            customerBasket.add(item);
+        }
+        return true;
     }
 
     public boolean removeItem(Item item) {
-        return false;
+        if (customerBasket.isEmpty() || !customerBasket.contains(item)) {
+            return false;
+        }
+        else {
+            customerBasket.remove(item);
+            return true;
+        }
     }
 
     public double calculateTotalCost() {
-        return 0.0;
+        double totalcost = 0;
+
+        for (Item i : customerBasket) {
+            totalcost += i.price;
+        }
+
+        return totalcost;
     }
 
     public boolean containsItem(Item item) {
-        return false;
+        return customerBasket.contains(item);
     }
 
     public void clearBasket() {

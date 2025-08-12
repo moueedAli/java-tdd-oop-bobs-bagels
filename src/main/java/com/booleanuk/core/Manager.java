@@ -4,7 +4,6 @@ public class Manager extends User {
 
     private String name;
     private Inventory inventory;
-    private Basket basket;
 
     public Manager(String name) {
         super(name);

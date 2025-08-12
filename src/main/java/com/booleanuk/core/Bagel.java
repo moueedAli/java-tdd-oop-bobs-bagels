@@ -5,20 +5,24 @@ import java.util.List;
 
 public class Bagel extends Item{
 
-    private List<Fillings> fillings;
-    Inventory inventory = new Inventory();
+    private List<Fillings> fillings = new ArrayList<>();
 
     public Bagel(String SKU, double price, String name, String variant) {
         super(SKU, price, name, variant);
-        this.fillings = new ArrayList<>();
     }
 
     public void addFillings(Fillings filling) {
-        ;
+        fillings.add(filling);
     }
 
-    public boolean removeFillings(Fillings filling) {
-        return true;
+    public boolean removeFillings(Fillings filling, Inventory inventory) {
+        if(fillings.isEmpty() || !fillings.contains(filling) || !inventory.isInInventory(filling.getSKU())) {
+            return false;
+        }
+        else {
+            fillings.remove(filling);
+            return true;
+        }
     }
 
     public List<Fillings> getFillings() {
@@ -26,6 +30,12 @@ public class Bagel extends Item{
     }
 
     public double getBagelPrice() {
-        return 0.0;
+        double totPrice = 0;
+        for (Fillings f: fillings) {
+            totPrice += f.getPrice();
+        }
+
+        totPrice += this.getPrice();
+        return totPrice;
     }
 }
