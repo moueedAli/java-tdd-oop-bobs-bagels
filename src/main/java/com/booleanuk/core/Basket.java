@@ -48,6 +48,47 @@ public class Basket {
         }
     }
 
+    public double calculateDiscount() {
+        List<Item> bagels = new ArrayList<>();
+        int rest;
+        int quantDisc;
+
+        for (Item i: customerBasket) {
+            if (i.name.equals("Bagel")) {
+                bagels.add(i);
+            }
+        }
+
+        if (bagels.size() < 5) {
+            return calculateTotalCost();
+        }
+        else if (bagels.size() >= 6 && bagels.size() < 12) {
+            rest = bagels.size() % 6;
+            double totalCost = 2.49;
+
+            for (int i = bagels.size()-1; i > 5; i--) {
+                totalCost += bagels.get(i).getPrice();
+            }
+
+            return totalCost;
+        }
+        else {
+            quantDisc = bagels.size() / 12;
+            rest = bagels.size() % 12;
+            double totalCost = 0;
+
+            if (quantDisc >= 1) {
+                totalCost += quantDisc*3.99;
+            }
+
+            for (int i = bagels.size()-1; i > 11; i--) {
+                totalCost += bagels.get(i).getPrice();
+            }
+
+            return totalCost;
+        }
+    }
+
     public double calculateTotalCost() {
         double totalcost = 0;
 

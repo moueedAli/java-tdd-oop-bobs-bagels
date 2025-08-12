@@ -4,26 +4,30 @@
 ![img_1.png](img_1.png)
 
 ## Basket
-| Classes | Members                     | Methods                       | Scenario                 | Output                        | 
-|---------|-----------------------------|-------------------------------|--------------------------|-------------------------------|
-| Basket  | customerBasket: List\<Item> |                               |                          |                               | 
-|         | capacity: int               |                               |                          |                               |
-|         |                             | getAllItems()                 | at least one item        | return all items              |
-|         |                             |                               | empty                    | return nothing                |
-|         |                             | getCap()                      |                          | return capacity               |
-|         |                             | setCapacity(int newCap)       | newCap > capacity        | change capacity               |
-|         |                             |                               | newCap <= capacity       | do not change capacity        |
-|         |                             | isFull()                      | basket is full           | return true                   |
-|         |                             |                               | basket is not full       | return false                  |
-|         |                             | getRemainingCapacity()        |                          | return capacity - basket.size() |
-|         |                             | addItem(Item item, Inventory) | item is in inventory     | add to basket                 |
-|         |                             |                               | item is not in inventory | do not add to basket          |
-|         |                             |                               | basket is full           | do not add to basket          |
-|         |                             | removeItem(Item item)         | item is in basket        | remove from basket            |
-|         |                             |                               | item is not in basket    | do nothing                    |
-|         |                             |                               | basket is empty          | do nothing                    |
-|         |                             | calculateTotalCost()          | basket is empty          | return 0                      |
-|         |                             |                               | basket is not empty      | calculate cost and return     |
+| Classes | Members                     | Methods                         | Scenario                        | Output                                                               | 
+|---------|-----------------------------|---------------------------------|---------------------------------|----------------------------------------------------------------------|
+| Basket  | customerBasket: List\<Item> |                                 |                                 |                                                                      | 
+|         | capacity: int               |                                 |                                 |                                                                      |
+|         |                             | getAllItems()                   | at least one item               | return all items                                                     |
+|         |                             |                                 | empty                           | return nothing                                                       |
+|         |                             | getCap()                        |                                 | return capacity                                                      |
+|         |                             | setCapacity(int newCap)         | newCap > capacity               | change capacity                                                      |
+|         |                             |                                 | newCap <= capacity              | do not change capacity                                               |
+|         |                             | isFull()                        | basket is full                  | return true                                                          |
+|         |                             |                                 | basket is not full              | return false                                                         |
+|         |                             | getRemainingCapacity()          |                                 | return capacity - basket.size()                                      |
+|         |                             | addItem(Item item, Inventory)   | item is in inventory            | add to basket                                                        |
+|         |                             |                                 | item is not in inventory        | do not add to basket                                                 |
+|         |                             |                                 | basket is full                  | do not add to basket                                                 |
+|         |                             | removeItem(Item item)           | item is in basket               | remove from basket                                                   |
+|         |                             |                                 | item is not in basket           | do nothing                                                           |
+|         |                             |                                 | basket is empty                 | do nothing                                                           |
+|         |                             | calculateTotalCost()            | basket is empty                 | return 0                                                             |
+|         |                             |                                 | basket is not empty             | calculate cost and return                                            |
+|         |                             | applyDiscount()                 | basket has less than 5 items    | no discount applied                                                  |
+|         |                             |                                 | basket has > 5 and < 12 bagels  | apply discount for 6 only                                            |
+|         |                             |                                 | basket has > 12                 | apply discount for 12, and see if any further discount is applicable |
+|         |                             |                                 | basket has one coffee and bagel | apply discount for bagel and coffee                                  |
 
 ## User
 | Classes | Members          | Methods                                         | Scenario                         | Output                       | 
