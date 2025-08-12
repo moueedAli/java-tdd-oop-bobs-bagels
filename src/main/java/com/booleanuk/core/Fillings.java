@@ -1,8 +1,8 @@
 package com.booleanuk.core;
 
-public class Fillings{
+public class Fillings extends Item{
 
-    public Fillings() {
-
+    public Fillings(String SKU, double price, String name, String variant) {
+        super(SKU, price, name, variant);
     }
 }

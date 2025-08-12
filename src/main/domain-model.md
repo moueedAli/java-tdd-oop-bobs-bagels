@@ -1,74 +1,64 @@
 # Bobs bagel
 
----
-As a member of the public,\
-So I can order a bagel before work,\
-I'd like to add a specific type of bagel to my basket.
----
-As a member of the public,\
-So I can change my order,\
-I'd like to remove a bagel from my basket.
----
-As a member of the public,\
-So that I can not overfill my small bagel basket\
-I'd like to know when my basket is full when I try adding an item beyond my basket capacity.
----
-As a Bob's Bagels manager,\
-So that I can expand my business,\
-I’d like to change the capacity of baskets.
----
-As a member of the public\
-So that I can maintain my sanity\
-I'd like to know if I try to remove an item that doesn't exist in my basket.
----
-As a customer,\
-So I know how much money I need,\
-I'd like to know the total cost of items in my basket.
----
-As a customer,\
-So I know what the damage will be,\
-I'd like to know the cost of a bagel before I add it to my basket.
----
-As a customer,\
-So I can shake things up a bit,\
-I'd like to be able to choose fillings for my bagel.
----
-As a customer,\
-So I don't over-spend,\
-I'd like to know the cost of each filling before I add it to my bagel order.
----
-As the manager,\
-So we don't get any weird requests,\
-I want customers to only be able to order things that we stock in our inventory.
----
-
 ## Classdiagram
 ![img_1.png](img_1.png)
 
 ## Basket
-| Classes | Members       | Methods       | Scenario          | Output           | 
-|---------|---------------|---------------|-------------------|------------------|
-| Basket  | List\<Items>  |               |                   |                  | 
-|         | capacity: int |               |                   |                  |
-|         |               | getAllItems() | at least one item | return all items |
-|         |               |               | empty             | return nothing   |
+| Classes | Members                     | Methods                       | Scenario                 | Output                        | 
+|---------|-----------------------------|-------------------------------|--------------------------|-------------------------------|
+| Basket  | customerBasket: List\<Item> |                               |                          |                               | 
+|         | capacity: int               |                               |                          |                               |
+|         |                             | getAllItems()                 | at least one item        | return all items              |
+|         |                             |                               | empty                    | return nothing                |
+|         |                             | getCap()                      |                          | return capacity               |
+|         |                             | setCapacity(int newCap)       | newCap > capacity        | change capacity               |
+|         |                             |                               | newCap <= capacity       | do not change capacity        |
+|         |                             | isFull()                      | basket is full           | return true                   |
+|         |                             |                               | basket is not full       | return false                  |
+|         |                             | getRemainingCapacity()        |                          | return capacity - basket.size() |
+|         |                             | addItem(Item item, Inventory) | item is in inventory     | add to basket                 |
+|         |                             |                               | item is not in inventory | do not add to basket          |
+|         |                             |                               | basket is full           | do not add to basket          |
+|         |                             | removeItem(Item item)         | item is in basket        | remove from basket            |
+|         |                             |                               | item is not in basket    | do nothing                    |
+|         |                             |                               | basket is empty          | do nothing                    |
+|         |                             | calculateTotalCost()          | basket is empty          | return 0                      |
+|         |                             |                               | basket is not empty      | calculate cost and return     |
+
+## User
+| Classes | Members          | Methods                                         | Scenario                         | Output                       | 
+|---------|------------------|-------------------------------------------------|----------------------------------|------------------------------|
+| User    | name: String     |                                                 |                                  |                              | 
+|         | DEFAULT_CAP: int |                                                 |                                  |                              |
+|         | basket: Basket   |                                                 |                                  |                              |
+|         |                  | getName()                                       | name given                       | return name                  |
+|         |                  |                                                 | no name given                    | returns no name              |
+|         |                  | getBasket()                                     | empty basket                     | no basket returned           |
+|         |                  |                                                 | basket has at least one item     | return basket with items     |
+|         |                  | addItemToBasket(Item item, Inventory inventory) | item exists in inventory         | add item to basket           |
+|         |                  |                                                 | item does not exist in inventory | item is not added to basket  |
+|         |                  |                                                 | basket is full                   | item is not added to basket  |
+|         |                  | removeItemFromBasket(Item item)                 | item exists in basket            | remove said item from basket |
+|         |                  |                                                 | item does not exist in basket    | item is not removed          |
+|         |                  |                                                 | basket is empty                  | nothing is done              |
 
 
 ## Manager
-| Classes | Member                 | Methods                                             | Scenario                     | Output                                         | 
-|---------|------------------------|-----------------------------------------------------|------------------------------|------------------------------------------------|
-| Manager | name: String           |                                                     |                              |                                                |
-|         | List\<Items> Inventory |                                                     |                              |                                                |
-|         |                        | changeCapacity(Basket basket, int capacity)         | capacity > oldCapacity       | change capacity to new capacity                | 
-|         |                        |                                                     | capacity <= oldCapacity      | return message to show new capacity is too low | 
-|         |                        | onlyOrderFillingsInInventory(List\<Items> fillings) | fillings is in inventory     | make bagel and serve customer                  | 
-|         |                        |                                                     | fillings is not in inventory | tell customer that filling is not available    |
+### Does everything a User can do, but also has some extra accesses as shown below
+| Classes | Member              | Methods                      | Scenario                     | Output                                         | 
+|---------|---------------------|------------------------------|------------------------------|------------------------------------------------|
+| Manager | name: String        |                              |                              |                                                |
+|         | Inventory inventory |                              |                              |                                                |
+|         |                     | changeCapacity(int capacity) | capacity > oldCapacity       | change capacity to new capacity                | 
+|         |                     |                              | capacity <= oldCapacity      | return message to show new capacity is too low | 
+|         |                     | isInInventory(Item item)     | fillings is in inventory     | make bagel and serve customer                  | 
+|         |                     |                              | fillings is not in inventory | tell customer that filling is not available    |
 
 ## Customer
+### Does everything a User can do, but also has some extra accesses as shown below
 | Classes  | Member         | Methods                                                | Scenario                    | Output                                         |
 |----------|----------------|--------------------------------------------------------|-----------------------------|------------------------------------------------|
 | Customer | name:String    |                                                        |                             |                                                |
-|          | basket: Basket |                                                        |                             |                                                |
 |          |                | totalCostOfBasket(Basket basket)                       | emptyBasket                 | show 0                                         |    
 |          |                |                                                        | at least one item in basket | calculate cost                                 |    
 |          |                | showCostBeforeAdding(Items item (bagels and fillings)) | valid item                  | show cost                                      |    
@@ -78,16 +68,17 @@ I want customers to only be able to order things that we stock in our inventory.
 
 
 ## MemberPublic
-| Classes      | Member         | Methods                | Scenario                      | Output                                                  |
-|--------------|----------------|------------------------|-------------------------------|---------------------------------------------------------|
-| MemberPublic | name: String   |                        |                               |                                                         |
-|              | basket: Basket |                        |                               |                                                         |              
-|              |                | addBagel(Items item)   | basket not full               | add bagel to basket                                     |
-|              |                |                        | basket full                   | not able to add,  show user message that basket is full |
-|              |                | removeItem(Items item) | basket empty                  | not able to remove anything                             |    
-|              |                |                        | basket not empty              | able to remove said bagel                               |   
-|              |                |                        | item does not exist in basket | show message that item does not exist                   |
-
+### Does everything a User can do, has no extra accesses
+| Classes      | Member         | Methods                                         | Scenario                         | Output                       |
+|--------------|----------------|-------------------------------------------------|----------------------------------|------------------------------|
+| MemberPublic | name: String   |                                                 |                                  |                              |
+|              | basket: Basket |                                                 |                                  |                              |              
+|              |                | addItemToBasket(Item item, Inventory inventory) | item exists in inventory         | add item to basket           |
+|              |                |                                                 | item does not exist in inventory | item is not added to basket  |
+|              |                |                                                 | basket is full                   | item is not added to basket  |
+|              |                | removeItemFromBasket(Item item)                 | item exists in basket            | remove said item from basket |
+|              |                |                                                 | item does not exist in basket    | item is not removed          |
+|              |                |                                                 | basket is empty                  | nothing is done              |
 
 ## Items
 | Classes | Member          | Methods      | Scenario              | Output         |
@@ -105,5 +96,13 @@ I want customers to only be able to order things that we stock in our inventory.
 |         |                 | getVariant() | variant available     | return variant |
 |         |                 |              | variant not available | return nothing |    
 
-
+## Inventory
+| Classes   | Member                 | Methods                   | Scenario                         | Output           |
+|-----------|------------------------|---------------------------|----------------------------------|------------------|
+| Inventory |                        |                           |                                  |                  | 
+|           | inventory: List\<Item> |                           |                                  |                  | 
+|           |                        | isInInventory(String sku) | item exists in inventory         | return true      | 
+|           |                        |                           | item does not exist in inventory | return false     | 
+|           |                        | getItem(String sku)       | item is in inventory             | return said item | 
+|           |                        |                           | item is not in inventory         | return null      | 
 
